@@ -24,6 +24,15 @@
     <ClInclude Include="Bilet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BiletEntertainment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BiletCultural.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BiletSport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">

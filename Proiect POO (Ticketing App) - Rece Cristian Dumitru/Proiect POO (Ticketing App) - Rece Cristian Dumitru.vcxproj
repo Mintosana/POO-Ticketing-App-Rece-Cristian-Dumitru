@@ -128,6 +128,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Bilet.h" />
+    <ClInclude Include="BiletEntertainment.h" />
+    <ClInclude Include="BiletSport.h" />
+    <ClInclude Include="BiletCultural.h" />
     <ClInclude Include="Eveniment.h" />
     <ClInclude Include="Locatie.h" />
   </ItemGroup>

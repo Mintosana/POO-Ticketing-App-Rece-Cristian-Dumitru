@@ -11,8 +11,6 @@ private:
 	int nrRanduri;
 	int nrScauneRand;  // numar de scaune per rand
 	int** matriceLocuri;
-
-
 	static int nrLocatii;
 
 public:
@@ -96,7 +94,7 @@ public:
 		nrLocatii++;
 	}
 
-	Locatie& operator=(Locatie& l) {
+	Locatie& operator=(const Locatie& l) {
 		if (this != &l) {
 			if (this->matriceLocuri != NULL) {
 				for (int i = 0; i < nrRanduri; i++) {
@@ -115,7 +113,7 @@ public:
 			this->matriceLocuri = new int* [this->nrRanduri];
 			for (int i = 0; i < this->nrRanduri; i++) {
 				if (i == this->nrRanduri - 1) {
-					this->matriceLocuri[i] = new int[this->maxLocuri % this->nrScauneRand];
+						this->matriceLocuri[i] = new int[this->maxLocuri % this->nrScauneRand];
 				}
 				else {
 					this->matriceLocuri[i] = new int[nrScauneRand];
@@ -134,7 +132,6 @@ public:
 				}
 			}
 		}
-
 		return *this;
 	}
 
@@ -160,7 +157,7 @@ public:
 	string getNumeLocatie() {
 		return numeLocatie;
 	}
-	void setnumeLocatie(string nume) {
+	void setNumeLocatie(string nume) {
 		if ( nume != "") {
 			numeLocatie = nume;
 		}

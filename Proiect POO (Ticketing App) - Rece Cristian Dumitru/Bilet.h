@@ -1,19 +1,16 @@
 #include <string>
 #include <iostream>
+#include "Eveniment.h"
 using namespace std;
-
-
 
 class Bilet {
 private:
 	string nume;
 	string prenume;
-	float pret;
-	char* spectacol;
-	string sala;  // Sala va fi ulterior luata din clasa eveniment (work in progress)
+	float pret; //?
 	int rand;
 	int loc;
-
+	Eveniment evenimentBilet;
 	const int id;
 	static int contorBilete;
 
@@ -23,61 +20,38 @@ public:
 		nume = "";
 		prenume = "";
 		pret = -1;
-		spectacol = nullptr;
-		sala = "";
 		rand = 0;
 		loc = 0;
 	}
 
-	Bilet(string nume, string prenume, float pret, char* spectacol, string sala, int rand, int loc) : id(++contorBilete) {
+	Bilet(string nume, string prenume, float pret, string sala, int rand, int loc,Eveniment eveniment) : id(++contorBilete) {
 		this->nume = nume;
 		this->prenume = prenume;
 		if(pret < 0) this->pret = pret * (-1);
 		else this->pret = pret;
-		this->sala = sala;
 		this->rand = rand;
 		this->loc = loc;
-		if (spectacol != nullptr && strlen(spectacol) > 0) {
-			delete[] this->spectacol;
-			this->spectacol = new char[strlen(spectacol) + 1];
-			strcpy_s(this->spectacol, strlen(spectacol) + 1, spectacol);
-		}
-		else {
-			this->spectacol = nullptr;
-		}
+		this->evenimentBilet = eveniment;
 	}
 
 	Bilet(const Bilet& b) : id(++contorBilete) {
 		this->nume = b.nume;
 		this->prenume = b.prenume;
 		this->pret = b.pret;
-		this->sala = b.sala;
 		this->rand = b.rand;
 		this->loc = b.loc;
-
-		if (b.spectacol != nullptr) {
-			this->spectacol = new char[strlen(b.spectacol) + 1];
-			strcpy_s(this->spectacol, strlen(b.spectacol) + 1, b.spectacol);
-		}
+		this->evenimentBilet = b.evenimentBilet;
 	}
 
-	Bilet& operator=(Bilet& b) {
+	Bilet& operator=(const Bilet& b) {
 		if (this != &b) {
-			if (this->spectacol != nullptr) {
-				delete[] this->spectacol;
-			}
-			if (b.spectacol != nullptr) {
-				this->spectacol = new char[strlen(b.spectacol) + 1];
-				strcpy_s(this->spectacol, strlen(b.spectacol) + 1, b.spectacol);
-			}
+			this->nume = b.nume;
+			this->prenume = b.prenume;
+			this->pret = b.pret;
+			this->rand = b.rand;
+			this->loc = b.loc;
+			this->evenimentBilet = b.evenimentBilet;
 		}
-		this->nume = b.nume;
-		this->prenume = b.prenume;
-		this->pret = b.pret;
-		this->sala = b.sala;
-		this->rand = b.rand;
-		this->loc = b.loc;
-
 		return *this;
 	}
 
@@ -105,22 +79,6 @@ public:
 	}
 	void setLoc(int loc) {
 		this->loc = loc;
-	}
-
-	char* getSpectacol() {
-		if (spectacol != nullptr) {
-			char* copy = new char[strlen(spectacol) + 1];
-			strcpy_s(copy, strlen(spectacol) + 1, spectacol);
-			return copy;
-		}
-		return nullptr;
-	}
-	void setSpectacol(const char* spectacol) {
-		if (spectacol != nullptr) {
-			delete[] this->spectacol;
-		}
-		this->spectacol = new char[strlen(spectacol) + 1];
-		strcpy_s(this->spectacol, strlen(spectacol) + 1, spectacol);
 	}
 
 	Bilet operator+(Bilet b) {
@@ -157,9 +115,8 @@ public:
 	}
 
 	~Bilet() {
-		if (spectacol != nullptr) delete[] this->spectacol;
-		contorBilete--;
 	}
+
 	friend Bilet operator+(float pret, Bilet b);
 	friend ostream& operator<<(ostream& out, const Bilet& b);
 	friend istream& operator>>(istream& in, Bilet& b);
@@ -195,17 +152,8 @@ istream& operator>>(istream& in, Bilet& b) {
 	} while (b.pret<0 || (!bec) ); bec = 0;
 
 	cout << "Introduceti denumirea spectacolului aferent biletului: ";
-	char buffer[50];
-	in.get();
-	in.getline(buffer, 50);
-	b.setSpectacol(buffer);
 	cout << "Introduceti denumirea salii in care spectacolul are loc: ";
-	//in.get();
-	in.getline(buffer, 50);
-	b.sala = buffer;
 
-
-	
 	do {
 		cout << "Introduceti randul aferent biletului: "; 
 		in >> bufferString;
@@ -240,16 +188,14 @@ istream& operator>>(istream& in, Bilet& b) {
 
 
 ostream& operator<<(ostream& out, const Bilet& b) {
+	Bilet aux;
+	aux = b;
 	out << "------------------Detalii bilet cu ID-ul " << b.id << "-----------------" << endl;
 	out << "Nume detinator bilet: " << b.nume << endl;
 	out << "Prenume detinator bilet: " << b.prenume << endl;
+	out << "Locatia evenimentului: " << aux.evenimentBilet.getLocatieEveniment().getNumeLocatie() << endl;
 	out << "Pret bilet: " << b.pret << endl;
-	out << "Denumire spectacol aferent biletului: ";
-	if (b.spectacol != nullptr) {
-		out << b.spectacol << endl;
-	}
-	else out << "Nu se poate identifica numele spectacolului";
-	out << "Sala in care spectacolul are parte: " << b.sala << endl;
+	out << "Denumire spectacol aferent biletului: " << aux.evenimentBilet.getDenumireEveniment()<<endl;
 	out << "Randul aferent biletului: " << b.rand << endl;
 	out << "Locul aferent biletului: " << b.loc << endl;
 

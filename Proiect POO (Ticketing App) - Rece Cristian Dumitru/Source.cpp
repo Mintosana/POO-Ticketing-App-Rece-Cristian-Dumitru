@@ -85,4 +85,17 @@ int main() {
 
 	e1 = e2--;
 	e1 = --e2;*/
+
+	Locatie l2(32, "Belvedere", "Str Chibz", 3);
+	Locatie l5(34, "Belvedere", "Str Chibz", 5);
+	Locatie l3 = l2;
+	Locatie l4(l2);
+
+	Eveniment e2(12, 10, 2024, "12:33", "Mandalorian",l5,cultural);
+	Eveniment e3;
+	Bilet b2("Rece", "Cristian", 6.99, "Rapsodia", 3, 7, e2);
+	cout << e2;
+	e2.scriereFisier("fisier.txt");
+	e3.citireFisier("fisier.txt");
+	e3.scriereFisier("fisier.txt");
 }
